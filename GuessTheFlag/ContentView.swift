@@ -14,6 +14,7 @@ struct ContentView: View {
     
     @State private var showingScore = false
     @State private var scoreTitle = ""
+    @State private var score = 0
     
     var body: some View {
         ZStack {
@@ -24,6 +25,8 @@ struct ContentView: View {
             .ignoresSafeArea()
             
             VStack {
+                Spacer()
+                
                 Text("Guess the Flag")
                     .font(.largeTitle.weight(.bold))
                     .foregroundStyle(.white)
@@ -37,6 +40,7 @@ struct ContentView: View {
                         Text(countries[correctAnswer])
                             .font(.largeTitle.weight(.semibold))
                             .foregroundStyle(.secondary)
+                            .shadow(radius: 10)
                     }
                     
                     ForEach(0..<3) { number in
@@ -49,27 +53,34 @@ struct ContentView: View {
                         }
                     }
                 }
-                .alert(scoreTitle, isPresented: $showingScore) {
-                    Button("Continue", action: askQuestion)
-                } message: {
-                    Text("Your score is ???")
-                }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
                 .background(.thinMaterial)
                 .clipShape(.rect(cornerRadius: 20))
                 
-                Text("Score: ???")
+                Spacer()
+                Spacer()
+                
+                Text("Score: \(score)")
                     .foregroundStyle(.white)
                     .font(.title.bold())
+                
+                Spacer()
             }
             .padding()
+            
+            .alert(scoreTitle, isPresented: $showingScore) {
+                Button("Continue", action: askQuestion)
+            } message: {
+                Text("Your score is \(score)")
+            }
         }
     }
     
     func flagTapped(_ number: Int) {
         if number == correctAnswer {
             scoreTitle = "Correct"
+            score += 1
         } else {
             scoreTitle = "Wrong"
         }
