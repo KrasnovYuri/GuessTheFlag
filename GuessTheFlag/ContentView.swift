@@ -7,6 +7,34 @@
 
 import SwiftUI
 
+
+//Custom modifier
+struct Title: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        content
+            .font(.title.weight(.bold))
+            .foregroundColor(.blue)
+    }
+}
+
+extension View {
+    func titleStyle() -> some View {
+        modifier(Title())
+    }
+}
+
+// View composition
+struct FlagImage: View {
+    var name: String
+    
+    var body: some View {
+        Image(name)
+            .clipShape(.buttonBorder)
+            .shadow(radius: 10)
+    }
+}
+
 struct ContentView: View {
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
@@ -17,6 +45,9 @@ struct ContentView: View {
     @State private var score = 0
     @State private var gameRound = 0
     @State private var showingReset = false
+    
+    
+
     
     var body: some View {
         ZStack {
@@ -49,9 +80,7 @@ struct ContentView: View {
                         Button {
                             flagTapped(number)
                         } label: {
-                            Image(countries[number])
-                                .clipShape(.buttonBorder)
-                                .shadow(radius: 10)
+                            FlagImage(name: countries[number])
                         }
                     }
                 }
@@ -64,9 +93,7 @@ struct ContentView: View {
                 Spacer()
                 
                 Text("Score: \(score)")
-                    .foregroundStyle(.white)
-                    .font(.title.bold())
-                    .shadow(radius: 10)
+                    .titleStyle()
                 
                 Spacer()
             }
