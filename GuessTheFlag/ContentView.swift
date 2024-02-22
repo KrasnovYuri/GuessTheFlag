@@ -46,6 +46,8 @@ struct ContentView: View {
     @State private var gameRound = 0
     @State private var showingReset = false
     
+    @State private var animationAmounts = Array(repeating: 0.0, count: 3)
+    
     
 
     
@@ -79,8 +81,12 @@ struct ContentView: View {
                     ForEach(0..<3) { number in
                         Button {
                             flagTapped(number)
+                            withAnimation {
+                                animationAmounts[number] += 360
+                            }
                         } label: {
                             FlagImage(name: countries[number])
+                                .rotation3DEffect(.degrees(animationAmounts[number]), axis: (x: 0.0, y: 1.0, z: 0.0))
                         }
                     }
                 }
